@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FileText, Upload, CheckCircle, History, Lock, Wallet } from "lucide-react";
 import ConnectionStatus from "@/components/ConnectionStatus";
 import WalletSelector from "@/components/WalletSelector";
 import FileUploader from "@/components/FileUploader";
@@ -19,9 +20,9 @@ export default function Home() {
 
   // Tabs de navegación
   const tabs = [
-    { id: 'upload' as TabId, label: 'Upload & Sign', icon: '📝' },
-    { id: 'verify' as TabId, label: 'Verify', icon: '✅' },
-    { id: 'history' as TabId, label: 'History', icon: '📋' }
+    { id: 'upload' as TabId, label: 'Upload & Sign', icon: Upload },
+    { id: 'verify' as TabId, label: 'Verify', icon: CheckCircle },
+    { id: 'history' as TabId, label: 'History', icon: History }
   ];
 
   const handleHashGenerated = (hash: string, file: File) => {
@@ -34,9 +35,12 @@ export default function Home() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-            📄 Document Registry
-          </h1>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <FileText className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+              Document Registry
+            </h1>
+          </div>
           <p className="text-gray-600 dark:text-gray-400">
             Sign and verify documents on the blockchain
           </p>
@@ -46,17 +50,23 @@ export default function Home() {
         <div className="max-w-6xl mx-auto mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                🔌 Wallet Connection
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <Wallet className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Wallet Connection
+                </h2>
+              </div>
               <ConnectionStatus />
             </div>
 
             {address && (
               <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-lg p-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                  💼 Switch Wallet
-                </h2>
+                <div className="flex items-center gap-2 mb-4">
+                  <Wallet className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    Switch Wallet
+                  </h2>
+                </div>
                 <WalletSelector />
               </div>
             )}
@@ -69,20 +79,23 @@ export default function Home() {
             {/* Tabs Navigation */}
             <div className="bg-white dark:bg-zinc-900 rounded-t-xl shadow-lg">
               <div className="flex border-b border-gray-200 dark:border-zinc-700">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex-1 px-6 py-4 text-sm font-medium transition-colors ${
-                      activeTab === tab.id
-                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-zinc-800'
-                    }`}
-                  >
-                    <span className="mr-2">{tab.icon}</span>
-                    {tab.label}
-                  </button>
-                ))}
+                {tabs.map((tab) => {
+                  const IconComponent = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex-1 px-6 py-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+                        activeTab === tab.id
+                          ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                          : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-zinc-800'
+                      }`}
+                    >
+                      <IconComponent className="w-4 h-4" />
+                      {tab.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -92,17 +105,23 @@ export default function Home() {
               {activeTab === 'upload' && (
                 <div className="space-y-8">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                      📤 Upload Document
-                    </h3>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Upload className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        Upload Document
+                      </h3>
+                    </div>
                     <FileUploader onHashGenerated={handleHashGenerated} />
                   </div>
                   
                   {documentHash && (
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                        ✍️ Sign & Store
-                      </h3>
+                      <div className="flex items-center gap-2 mb-4">
+                        <FileText className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                          Sign & Store
+                        </h3>
+                      </div>
                       <DocumentSigner documentHash={documentHash} fileName={fileName} />
                     </div>
                   )}
@@ -112,9 +131,12 @@ export default function Home() {
               {/* Verify Tab */}
               {activeTab === 'verify' && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    🔍 Verify Document
-                  </h3>
+                  <div className="flex items-center gap-2 mb-4">
+                    <CheckCircle className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Verify Document
+                    </h3>
+                  </div>
                   <DocumentVerifier />
                 </div>
               )}
@@ -122,9 +144,12 @@ export default function Home() {
               {/* History Tab */}
               {activeTab === 'history' && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    📚 Document History
-                  </h3>
+                  <div className="flex items-center gap-2 mb-4">
+                    <History className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Document History
+                    </h3>
+                  </div>
                   <DocumentHistory />
                 </div>
               )}
@@ -136,9 +161,7 @@ export default function Home() {
         {!address && (
           <div className="max-w-6xl mx-auto">
             <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-lg p-12 text-center">
-              <svg className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
+              <Lock className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Connect Your Wallet
               </h3>
